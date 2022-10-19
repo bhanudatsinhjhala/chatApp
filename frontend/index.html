@@ -4,14 +4,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        #status{
+            display: inline-block;
+        }
+        #content{
+            overflow-y: scroll;
+            height: 400px;
+            width: 400px;
+        }
+    </style>
     <title>Chat App</title>
 </head>
 <body>
     <h1>Chat Application</h1>
     <p>This is a chat Application</p>
-    <input type="text" name="message" id="input" disabled>
     <p id="content"></p>
     <p id="status"></p>
+    <input type="text" name="message" id="input" disabled>
     <script src="ws.js"></script>
 </body>
 </html>

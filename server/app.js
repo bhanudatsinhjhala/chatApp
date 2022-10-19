@@ -68,6 +68,19 @@ let wsServer= new webSocketServer({
                     if(message.type==='utf8'){
                         console.log(message.utf8Data);
                     }
+                    // console.log(Date(message.utf8Data).getTime());
+                }else if(Date(message.utf8Data) && message.utf8Data.length==13){
+                    console.log("it works");
+                    console.log(message.utf8Data);
+                    history.forEach((obj, index)=>{
+                        if(obj.time==message.utf8Data){
+                            history.splice(index,1);
+                                let json= JSON.stringify({type:'history', data:history });
+                                for(let i=0; i<clients.length; i++){
+                                    clients[i].sendUTF(json);
+                                }
+                        }
+                    })
                 }else{
 
                     //log broadcast messages

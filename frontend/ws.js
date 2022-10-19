@@ -30,7 +30,7 @@ connection.onmessage = function (message) {
   //get json data
   try {
     var json = JSON.parse(message.data);
-    // console.log(json);
+    console.log(json);
   } catch (e) {
     console.log(`Invalid Json: ${message.data}`);
     return;
@@ -47,12 +47,14 @@ connection.onmessage = function (message) {
   
   //check json type is history
   else if ((json.type === "history")) {
+    content.innerHTML=" ";
     for (let i = 0; i < json.data.length; i++) {
       addMessage(
         json.data[i].author,
         json.data[i].text,
         json.data[i].color,
-        new Date(json.data[i].time)
+        new Date(json.data[i].time),
+        json.data[i].time
       );
     }
   }
@@ -94,12 +96,24 @@ input.addEventListener("keypress", function (e) {
 
 
 // display message in page
-function addMessage(author, message, color, dt){
+function addMessage(author, message, color, dt, time){
+  let getHour= dt.getHours() < 10 ? '0'
+ + dt.getHours() : dt.getHours();
+
+  let getMin=dt.getMinutes() < 10
+  ? '0' + dt.getMinutes() : dt.getMinutes();
+
+
   console.log("add message working"); 
-  content.innerHTML+='<p><span style="color:' + color + '">'
-  + author + '</span> @ ' + (dt.getHours() < 10 ? '0'
-  + dt.getHours() : dt.getHours()) + ':'
-  + (dt.getMinutes() < 10
-    ? '0' + dt.getMinutes() : dt.getMinutes())
-  + ': ' + message + '</p>';
+  content.innerHTML+=`<p><span style="color:${color}">
+  ${author}</span> @ ${getHour}:${getMin}
+  :  ${message} <input type="button" name="delete" value="Del" class="delBtn" onclick="delClickHandler(${time}, '${author}')"></p>`;
+}
+
+function delClickHandler(time, author) {
+  if(author==myName){
+    console.log(time, author);
+    connection.send(time);
+    content.innerHTML=" ";
+  }
 }
